@@ -1,0 +1,19 @@
+{
+  "name": "pdf-creator-tool",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "pdf": "node ./index.js",
+    "dev": "nodemon ./index.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1",
+    "js-yaml": "^3.14.0",
+    "nodemon": "^2.0.4",
+    "puppeteer": "^5.2.1"
+  }
+}
