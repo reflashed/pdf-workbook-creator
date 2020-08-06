@@ -19,13 +19,16 @@ const options = {
 
 if (!process.env.production) {
   const app = express();
+  app.set('port', 3000)
   app.use(express.static('./input/images'))
   app.get('/', (req, res) => res.send(html))
 
   // Reload code here
   const server = http.createServer(app)
-  reload(app).then(function (reloadReturned) {
-    server.listen(3000, function () {
+  reload(app, {
+    port: 8000
+  }).then(function (reloadReturned) {
+    server.listen(app.get('port'), function () {
       console.log('Test Environment on port ' + 3000)
     })
   }).catch(function (err) {
