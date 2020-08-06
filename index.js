@@ -1,47 +1,49 @@
 const fs = require('fs');
 const puppeteer = require('puppeteer');
 const yaml = require("js-yaml");
+const reload = require('reload')
 const express = require("express");
-
-
+const http = require('http');
 const pdfTemplate = require('./layouts/layout.js');
 const config = yaml.safeLoad(fs.readFileSync('./input/config.yml', 'utf8'));
 const data = require('./input/pdf.json');
-const { exit } = require('process');
+const images = fs.readdirSync("./input/images");
+const html = pdfTemplate(config, images, data);
 
-let images = fs.readdirSync("./input/images");
-let html = pdfTemplate(config,images,data);
+const options = {
+  path: './output/output.pdf',
+  printBackground: true,
+  width: config.width,
+  height: config.height,
+};
 
-const app = express();
-app.use(express.static('./input/images'))
-app.listen(3000);
-app.get('/', (req, res) => res.send(html))
+if (!process.env.production) {
+  const app = express();
+  app.use(express.static('./input/images'))
+  app.get('/', (req, res) => res.send(html))
 
-
-async function pdfCreate() {
-    const browser = await puppeteer.launch({headless:true, args: ['--no-sandbox', '--disable-setuid-sandbox']});
-    const page = await browser.newPage();
-
-    await page.setContent(html);
-    await page.pdf(options);
-    console.log('works');
-    await browser.close();
+  // Reload code here
+  const server = http.createServer(app)
+  reload(app).then(function (reloadReturned) {
+    server.listen(3000, function () {
+      console.log('Test Environment on port ' + 3000)
+    })
+  }).catch(function (err) {
+    console.error('Reload could not start, could not start server/sample app', err)
+  })
 }
 
+async function pdfCreate() {
+  const browser = await puppeteer.launch({
+    headless: true,
+    args: ['--no-sandbox', '--disable-setuid-sandbox']
+  });
+  const page = await browser.newPage();
+
+  await page.setContent(html);
+  await page.pdf(options);
+  console.log('Created/Updated Pdf in Output');
+  await browser.close();
+}
 
 pdfCreate();
-
-
-var options = {
-    path: './output/output.pdf',
-    printBackground: true,
-
-    width: config.width ,            // allowed units: mm, cm, in, px
-    height: config.height ,        // allowed units: mm, cm, in, px
-    };
-    
-
-
-
-
-

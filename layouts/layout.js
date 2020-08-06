@@ -1,8 +1,8 @@
-module.exports = (config,images,data) => {
+module.exports = (config, images, data) => {
 
     let pageCountTC = -1;
     let pageCount = -1;
-    
+
 
     let playlistList = data.playlists.map(playlists => {
         let itemList = playlists.images.map(item => {
@@ -25,8 +25,8 @@ module.exports = (config,images,data) => {
         `
     })
 
-    let tableContents = 
-    `
+    let tableContents =
+        `
         <div class="playlist-container">
             <h1>Table of Contents</h1>
             ${playlistList.join('')}
@@ -57,9 +57,9 @@ module.exports = (config,images,data) => {
         `
     })
 
-    let contentConcatinated = tableContents + `<div style="page-break-after: always;"></div>` +contentPages.join('');
+    let contentConcatinated = tableContents + `<div style="page-break-after: always;"></div>` + contentPages.join('');
 
-return `
+    return `
     <!DOCTYPE html>
     <html>
         <head>
@@ -67,7 +67,7 @@ return `
             <title>Hello world!</title>
             <style>
                 body {
-                    font-size:20px;
+                    font-size:14px;
                     margin:0;
                 }
 
@@ -105,7 +105,7 @@ return `
 
                 .playlist-title {
                     font-weight: bold;
-                    font-size: 12px;
+                    font-size: 16px;
                 }
 
                 .item {
@@ -132,8 +132,7 @@ return `
         ${contentConcatinated}
             
         </body>
+        <script src="/reload/reload.js"></script>
     </html>
     `;
 };
-
-
