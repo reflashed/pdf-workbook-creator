@@ -38,7 +38,7 @@ module.exports = (config, images, data) => {
         return `
         <div class="page-dim">
             <div class="image">
-                <img src="http://localhost:3000/${image}" alt="Image not loading. Idk go ask Ryan wuts wrong"/>
+                <img src="http://localhost:3000/${image}" alt="Image not loading."/>
             </div>
             <div class="footer">
                 ${pageCount}
@@ -64,68 +64,18 @@ module.exports = (config, images, data) => {
     <html>
         <head>
             <mate charest="utf-8" />
-            <title>Hello world!</title>
-            <style>
-                body {
-                    font-size:14px;
-                    margin:0;
-                }
+            <link rel="stylesheet" type="text/css" href="/layout.css">
 
-                .page-dim {
+            <title>pdf-workbook-creator</title>
+            <style>
+                
+            .page-dim {
                 position: relative;
                 width: ${config.width};
                 height: ${config.height};
                 }
 
-                .footer {
-                    position: absolute;
-                    bottom: 0;
-                    width: 100%;
-                    height: 50px;
-                    border-top: solid black 1px;
-                }
-
-                .playlist-container {
-                    padding: 0px 30px 15px 30px;
-                }
-       
-
-                .playlist {
-                    display: grid;
-                    grid-column-gap: 30px;
-                    grid-template-columns:  33.3% auto 33.3%;
-                    padding-bottom: 15px;
-
-                  }
-                  
-                .playlist > div {
-                background-color: rgba(255, 255, 255, 0.8);
-                text-align: center;
-                }
-
-                .playlist-title {
-                    font-weight: bold;
-                    font-size: 16px;
-                }
-
-                .item {
-                    display: flex;
-                    justify-content: space-between;
-                }
-
-                img {
-                    width:80%;
-                    height:auto;
-                }
-
-                .grid {
-                    display:grid;
-                }
-
-                .image {
-                    text-align:center;
-                    padding: 15% 0;
-                }
+                
             </style>
         </head>
         <body>

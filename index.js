@@ -7,6 +7,9 @@ const http = require('http');
 const pdfTemplate = require('./layouts/layout.js');
 const config = yaml.safeLoad(fs.readFileSync('./input/config.yml', 'utf8'));
 const data = require('./input/pdf.json');
+const {
+  exit
+} = require('process');
 const images = fs.readdirSync("./input/images");
 const html = pdfTemplate(config, images, data);
 
@@ -17,24 +20,22 @@ const options = {
   height: config.height,
 };
 
-if (!process.env.production) {
-  const app = express();
-  app.set('port', 3000)
-  app.use(express.static('./input/images'))
-  app.get('/', (req, res) => res.send(html))
+const app = express();
+app.set('port', 3000)
+app.use(express.static('./input/images'))
+app.use(express.static('./layouts'))
+app.get('/', (req, res) => res.send(html))
 
-  // Reload code here
-  const server = http.createServer(app)
-  reload(app, {
-    port: 8000
-  }).then(function (reloadReturned) {
-    server.listen(app.get('port'), function () {
-      console.log('Test Environment on port ' + 3000)
-    })
-  }).catch(function (err) {
-    console.error('Reload could not start, could not start server/sample app', err)
+const server = http.createServer(app)
+reload(app, {
+  port: 8000
+}).then(function (reloadReturned) {
+  server.listen(app.get('port'), function () {
+    console.log("Started test environment at localhost:3000");
   })
-}
+}).catch(function (err) {
+  console.error("Reload could not start, could not start server/sample app", err)
+})
 
 async function pdfCreate() {
   const browser = await puppeteer.launch({
@@ -44,9 +45,20 @@ async function pdfCreate() {
   const page = await browser.newPage();
 
   await page.setContent(html);
+  await page.addStyleTag({path: './layouts/layout.css'})
+
   await page.pdf(options);
   console.log('Created/Updated Pdf in Output');
   await browser.close();
 }
 
+function escape() {
+  exit();
+}
+
 pdfCreate();
+
+if (process.env.production) {
+  setTimeout(escape, 1500);
+}
+
