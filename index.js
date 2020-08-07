@@ -45,7 +45,9 @@ async function pdfCreate() {
   const page = await browser.newPage();
 
   await page.setContent(html);
-  await page.addStyleTag({path: './layouts/layout.css'})
+  await page.addStyleTag({path: './layouts/layout.css', content: ".page-dog {border: solid black 1px}"})
+  await page.addStyleTag({content: '.body{background: red}'})
+
 
   await page.pdf(options);
   console.log('Created/Updated Pdf in Output');

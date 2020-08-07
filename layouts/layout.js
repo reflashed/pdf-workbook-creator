@@ -27,10 +27,12 @@ module.exports = (config, images, data) => {
 
     let tableContents =
         `
-        <div class="playlist-container">
-            <h1>Table of Contents</h1>
-            ${playlistList.join('')}
-        </div>  
+        <div class="page-dim">
+            <div class="playlist-container">
+                <h1>Table of Contents</h1>
+                ${playlistList.join('')}
+            </div>  
+        </div>
     `
 
     let contentPages = images.map(image => {
@@ -73,6 +75,8 @@ module.exports = (config, images, data) => {
                 position: relative;
                 width: ${config.width};
                 height: ${config.height};
+                border: black solid 1px;
+
                 }
 
                 
