@@ -50,9 +50,10 @@ async function pdfCreate() {
   });
   const page = await browser.newPage();
 
-  await page.addStyleTag({path: './layouts/layout.css'})
-
   await page.setContent(html);
+  await page.addStyleTag({path: './layouts/layout.css'})
+  await page.addStyleTag({content: ".page-dim {border:0px !important}"})
+
 
   await page.pdf(options);
   console.log('Created/Updated Pdf in Output');

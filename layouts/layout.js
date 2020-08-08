@@ -75,8 +75,7 @@ module.exports = (config, images, data) => {
                 position: relative;
                 width: ${config.width};
                 height: ${config.height};
-                border: black solid 1px;
-
+                border:solid black 1px
                 }
 
                 
