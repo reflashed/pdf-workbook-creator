@@ -21,7 +21,7 @@ Preferably also include an output directory for the docker container to mount to
 
 Run the production image with:
 ```
-docker run -v $(pwd)/<input path>/:/app/input -v $(pwd)/<output path>/:/app/output -e "production=true" --user "$(id -u):$(id -g)" --rm ryanwestfall/pdf-workbook-creator:latest
+docker run -v $(pwd)/input/:/app/input -v $(pwd)/output/:/app/output --user "$(id -u):$(id -g)" --rm ryanwestfall/pdf-workbook-creator:latest
 ```
 
 # Development:
@@ -31,13 +31,9 @@ docker run -v $(pwd)/<input path>/:/app/input -v $(pwd)/<output path>/:/app/outp
 * An express app will run on localhost:3000
 * Hot realoading will be enabled on the express app and the outputted pdf file
 
-### You must build the development image yourself to use the developemet tools
-Build development image with:
-```
-docker build -t pdf-workbook-creator-dev -f Dockerfile.dev .
-```
+### You must pass the an environemnet variable "dev=true" to use the developemet tools
 Run the development image with:
 ```
-docker run -v $(pwd):/app/ -v /app/node_modules/ --user "$(id -u):$(id -g)" --rm -e "dev=true" -p 8000:8000 -p 3000:3000 pdf-workbook-creator-dev
+docker run -v $(pwd):/app/ -v /app/node_modules/ --user "$(id -u):$(id -g)" --rm -e "dev=true" -p 8000:8000 -p 3000:3000 ryanwestfall/pdf-workbook-creator:latest
 ```
 

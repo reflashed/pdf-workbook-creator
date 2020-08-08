@@ -1,11 +1,11 @@
 {
-  "name": "pdf-creator-tool",
+  "name": "pdf-workbook-creator",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "pdf": "node ./index.js",
+    "prod": "node ./index.js",
     "dev": "nodemon -e css,js,yml ./index.js"
   },
   "author": "",

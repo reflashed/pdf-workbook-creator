@@ -3,4 +3,6 @@ WORKDIR /app
 COPY package*.json ./
 RUN npm install
 COPY . .
-CMD [ "npm", "run", "pdf" ]
+EXPOSE 3000
+EXPOSE 8000
+CMD [ "bash", "run.sh"]
