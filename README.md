@@ -29,7 +29,7 @@ docker run -v $(pwd)/input/:/app/input -v $(pwd)/output/:/app/output --user "$(i
 #### When running in development:
 * The container will continously run until manually exited
 * An express app will run on localhost:3000
-* Hot realoading will be enabled on the express app and the outputted pdf file
+* Hot reloading will be enabled on the express app and the outputted pdf file
 
 ### You must pass the an environemnet variable "dev=true" to use the developemet tools
 Run the development image with:

@@ -3,10 +3,12 @@ module.exports = (config, images, data) => {
     let pageCountTC = -1;
     let pageCount = -1;
 
+    let image_data = [];
+
 
     let playlistList = data.playlists.map(playlists => {
         let itemList = playlists.images.map(item => {
-
+            cat.push(item.image_id);
             pageCountTC += 2;
 
             return `
@@ -35,12 +37,12 @@ module.exports = (config, images, data) => {
         </div>
     `
 
-    let contentPages = images.map(image => {
+    let contentPages = image_data.map(image => {
         pageCount += 2;
         return `
         <div class="page-dim">
             <div class="image">
-                <img src="http://localhost:3000/${image}" alt="Image not loading."/>
+                <img src="http://localhost:3000/${image}.jpg" alt="Image not loading."/>
             </div>
             <div class="footer">
                 ${pageCount}
