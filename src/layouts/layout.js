@@ -2,13 +2,11 @@ module.exports = (config, images, data) => {
 
     let pageCountTC = -1;
     let pageCount = -1;
-
     let image_data = [];
-
 
     let playlistList = data.playlists.map(playlists => {
         let itemList = playlists.images.map(item => {
-            cat.push(item.image_id);
+            image_data.push(item.image_id);
             pageCountTC += 2;
 
             return `
@@ -61,7 +59,7 @@ module.exports = (config, images, data) => {
         `
     })
 
-    let contentConcatinated = tableContents + `<div style="page-break-after: always;"></div>` + contentPages.join('');
+    let contentConcatinated = tableContents + contentPages.join('');
 
     return `
     <!DOCTYPE html>

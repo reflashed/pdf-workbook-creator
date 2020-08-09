@@ -1,4 +1,4 @@
 node_modules/
-input/pdf.json
-input/images/*
-/output/*
+src/input/pdf.json
+src/input/images/*
+src/output/*

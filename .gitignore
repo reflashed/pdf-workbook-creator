@@ -1,6 +1,2 @@
 node_modules/
-input/pdf.json
-input/images/*
-/output/*
 
-!output/.gitkeep 

@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "prod": "node ./index.js",
-    "dev": "nodemon -e css,js,yml ./index.js"
+    "prod": "cd src && node ./index.js",
+    "dev": "cd src && nodemon -e css,js,yml ./index.js"
   },
   "author": "",
   "license": "ISC",

@@ -17,11 +17,13 @@ You must have an **Input** directory on *your* machine that contains:
 
 Preferably also include an output directory for the docker container to mount to
 
+The repo comes with an example on how to format these files.
+
 ---
 
 Run the production image with:
 ```
-docker run -v $(pwd)/input/:/app/input -v $(pwd)/output/:/app/output --user "$(id -u):$(id -g)" --rm ryanwestfall/pdf-workbook-creator:latest
+docker run -v $(pwd)/src/input/:/app/src/input -v $(pwd)/src/output/:/app/src/output --user "$(id -u):$(id -g)" --rm ryanwestfall/pdf-workbook-creator:latest
 ```
 
 # Development:
@@ -34,6 +36,6 @@ docker run -v $(pwd)/input/:/app/input -v $(pwd)/output/:/app/output --user "$(i
 ### You must pass the an environemnet variable "dev=true" to use the developemet tools
 Run the development image with:
 ```
-docker run -v $(pwd):/app/ -v /app/node_modules/ --user "$(id -u):$(id -g)" --rm -e "dev=true" -p 8000:8000 -p 3000:3000 ryanwestfall/pdf-workbook-creator:latest
+docker run  -v $(pwd)/src/:/app/src --user "$(id -u):$(id -g)" --rm -e "dev=true" -p 8000:8000 -p 3000:3000 ryanwestfall/pdf-workbook-creator:latest
 ```
 
