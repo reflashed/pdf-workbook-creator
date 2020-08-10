@@ -1,4 +1,4 @@
-const fs = require('fs');
+const fs = require('fs-extra');
 const puppeteer = require('puppeteer');
 const yaml = require("js-yaml");
 const reload = require('reload')
@@ -6,17 +6,34 @@ const express = require("express");
 const http = require('http');
 const pdfTemplate = require('./layouts/layout.js');
 const {  exit  } = require('process');
-const config = yaml.safeLoad(fs.readFileSync('./input/config.yml', 'utf8'));
-
+let config;
 let html;
 
 try {
-const data = require('./input/pdf.json');
-const images = fs.readdirSync("./input/images");
-html = pdfTemplate(config, images, data);
+  if (!fs.existsSync('./input/config.yml')) {
+    console.log("./input/config.yml missing. Using defualt config.")
+    fs.copySync("./example/input/config.yml", "./input/config.yml")
+  }
+  if(!fs.existsSync('./input/pdf.json')) {
+    console.log("./input/pdf.json missing. Using example pdf.json.")
+    fs.copySync("./example/input/pdf.json", "./input/pdf.json")
+  }
+  if(!fs.existsSync('./input/images')) {
+    console.log("./input/images missing. Using example images.")
+    fs.copySync("./example/input/images", "./input/images")
+  }
+  if(!fs.existsSync('./layouts/css/layout.css')) {
+    console.log("Layout css not specified. Using defualt css.")
+    fs.copySync("./layouts/default.css", "./layouts/css/layout.css")
+  }
+  
+    const data = require('./input/pdf.json');
+    const images = fs.readdirSync("./input/images");
+    config = yaml.safeLoad(fs.readFileSync('./input/config.yml', 'utf8'));
+
+    html = pdfTemplate(config, images, data);
 }
 catch(err) {
-  console.log("Missing from input: pdf.json or images directory");
   console.log(err);
   exit(1);
 }
@@ -31,7 +48,7 @@ const options = {
 const app = express();
 app.set('port', 3000)
 app.use(express.static('./input/images'))
-app.use(express.static('./layouts'))
+app.use(express.static('./layouts/css'))
 app.get('/', (req, res) => res.send(html))
 
 const server = http.createServer(app)
@@ -51,7 +68,7 @@ async function pdfCreate() {
   const page = await browser.newPage();
 
   await page.setContent(html);
-  await page.addStyleTag({path: './layouts/layout.css'})
+  await page.addStyleTag({path: './layouts/css/layout.css'})
   await page.addStyleTag({content: ".page-dim {border:0px !important}"})
 
 
