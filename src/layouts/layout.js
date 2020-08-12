@@ -1,4 +1,14 @@
-module.exports = (config, images, data) => {
+const yaml = require("js-yaml");
+const fs = require('fs-extra');
+const { parse } =  require('node-html-parser');
+const data = require('../mount/input/data.json');
+
+
+
+
+
+
+module.exports = (config) => {
 
     let pageCountTC = -1;
     let pageCount = -1;
@@ -59,22 +69,30 @@ module.exports = (config, images, data) => {
         `
     })
 
-    let contentConcatinated = tableContents + contentPages.join('');
+    const tc_inject = parse(fs.readFileSync("./mount/" + config.pages.page.layout_table.html, "utf-8")).querySelector('#table-of-contents').appendChild(parse(playlistList.join('')));
+    const tc_body = parse(fs.readFileSync("./mount/" + config.pages.page.layout_table.html, "utf-8")).querySelector('#root').appendChild(tc_inject);
+    // const image_body = parse(fs.readFileSync("./mount/" + config.pages[1].page_sequence.layout_image.html, "utf-8")).querySelector('#root');
+    // const notes_body = parse(fs.readFileSync("./mount/" + config.pages[1].page_sequence.layout_notes.html, "utf-8")).querySelector('#root');
+    let contentConcatinated = tc_body.parentNode + contentPages.join('');
+
 
     return `
     <!DOCTYPE html>
     <html>
         <head>
             <mate charest="utf-8" />
-            <link rel="stylesheet" type="text/css" href="/layout.css">
+            <link rel="stylesheet" type="text/css" href="${config.pages.page.layout_table.css}">
+            <link rel="stylesheet" type="text/css" href="${config.pages.page_sequence.layout_image.css}">
+            <link rel="stylesheet" type="text/css" href="${config.pages.page_sequence.layout_notes.css}">
+
 
             <title>pdf-workbook-creator</title>
             <style>
                 
             .page-dim {
                 position: relative;
-                width: ${config.width};
-                height: ${config.height};
+                width: ${config.size.width};
+                height: ${config.size.height};
                 border:solid black 1px
                 }
 
