@@ -12,7 +12,6 @@ let html;
 try {
   if (!fs.existsSync('./mount/config.yml')) {
     console.log("config.yml missing. Using defualt settings.")
-    // fs.copySync("./example/input/config.yml", "./mount/input/config.yml")
     fs.copySync("./defaults/", "./mount/")
 
   }
@@ -25,7 +24,6 @@ catch(err) {
   exit(1);
 }
 
-console.log(config);
 const options = {
   path: './mount/output/output.pdf',
   printBackground: true,
@@ -57,17 +55,18 @@ async function pdfCreate() {
   const page = await browser.newPage();
 
   await page.setContent(html);
-  await page.addStyleTag({path: './layouts/css/layout.css'})
+  await page.addStyleTag({path: "./mount/" + config.pages.page.layout_table.css})
+  await page.addStyleTag({path: "./mount/" + config.pages.page_sequence.layout_image.css})
+  await page.addStyleTag({path: "./mount/" + config.pages.page_sequence.layout_notes.css})
   await page.addStyleTag({content: ".page-dim {border:0px !important}"})
-
 
   await page.pdf(options);
   console.log('Created/Updated Pdf in Output');
   await browser.close();
 
-  // if (!process.env.dev) {
-  //   exit();
-  // }
+  if (!process.env.dev) {
+    exit();
+  }
 }
 
 pdfCreate();
