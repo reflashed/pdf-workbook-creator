@@ -10,7 +10,6 @@ This is a framework so the user should be able to modify the html and css within
 
 <a href="./src/defaults/output/output.pdf" download>View Sample Pdf Output</a>
 
-
 # What to know:
 
 The generated workbook contains 3 parts:
