@@ -1,3 +1,6 @@
-node_modules/
-src/mount/
+# vim
+*.sw[po]
 
+node_modules/
+mounted-volume
+input/*

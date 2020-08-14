@@ -1,8 +1,14 @@
 FROM buildkite/puppeteer
-WORKDIR /app
-COPY package*.json ./
+
+WORKDIR /cache
+COPY package.json package-lock.json ./
 RUN npm install
-COPY . .
+
+WORKDIR /app
+COPY . ./
+
 EXPOSE 3000
+# Do we actually have to expose 8000 or can it run inside the container w/o being exposed?
 EXPOSE 8000
-CMD [ "bash", "run.sh"]
+
+CMD ["bash", "start-service.sh"]

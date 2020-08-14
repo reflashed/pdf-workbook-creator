@@ -54,4 +54,3 @@ docker run  -v $(pwd):/app/src/mount/ --rm --user "$(id -u):$(id -g)" ryanwestfa
 ```
 docker run  -v $(pwd):/app/src/mount/ --rm -e "dev=true" -p 8000:8000 -p 3000:3000 --user "$(id -u):$(id -g)" ryanwestfall/pdf-workbook-creator:latest
 ```
-
