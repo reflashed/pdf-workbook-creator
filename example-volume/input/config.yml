@@ -1,0 +1,16 @@
+name: 'Sample PDF'
+size:
+  height: '8.5in'
+  width: '11in'
+stylesheets:
+- '1-page-variant/styles.css'
+- '2-page-variant/styles.css'
+- '3-page-variant/styles.css'
+global_data: 'data.json'
+pages:
+- layout: '1-page-variant/layout.pug'
+- layout: '2-page-variant/layout.pug'
+  local_data:
+    name: 'John'
+- layout: '3-page-variant/layout.pug'
+  local_data: '3-page-variant/data.json'

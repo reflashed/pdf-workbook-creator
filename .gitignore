@@ -1,5 +1,8 @@
-# vim
-*.sw[po]
+*.sw[po] # vim
+**/node_modules/
 
-node_modules/
+# output
+example-volume/output/
+# this gets mounted as a volume in development
 mounted-volume/
+

@@ -1,0 +1,27 @@
+.toc {
+  color: blue;
+}
+
+.toc .playlists {
+}
+
+.toc .playlist {
+  display: grid;
+  grid-column-gap: 30px;
+  grid-template-columns: 33.3% auto 33.3%;
+  padding-bottom: 15px;
+}
+
+.toc .playlist__name {
+  background-color: rgba(255, 255, 255, 0.8);
+  text-align: center;
+}
+
+.toc .playlist__num {
+}
+
+.toc .image__name {
+}
+
+.toc .image__num {
+}

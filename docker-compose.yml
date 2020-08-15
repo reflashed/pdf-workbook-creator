@@ -13,4 +13,5 @@ services:
       - './example-volume:/mounted-volume'
     environment:
       - 'NODE_ENV=development'
-      #- DEBUG
+      - 'UID=1000'
+      - 'GID=1000'

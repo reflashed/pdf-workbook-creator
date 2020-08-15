@@ -1,0 +1,9 @@
+div.toc
+  h1 Table of Contents
+
+  div.playlists
+    each playlist in global.playlists
+      h2 #{playlist.playlist_name}
+    
+      each image in playlist.images
+        li #{image.image_name}

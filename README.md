@@ -1,3 +1,26 @@
+# About
+
+PDF Workbook Creator allows you to quickly and easily generate PDFs from html and css pages.
+
+It works by creating a local express server, from which you can preview and edit your PDFs pages.
+
+...
+
+# Running the image
+
+## Building and running from Docker HUb
+
+```
+docker run -v $(pwd)/example-volume:/mounted-volume -e "NODE_ENV=production" -e "UID=$(id -u)" -e "GID=$(id -g)" -p 3000:3000 -p 8000:8000 --rm ryanwestfall/pdf-workbook-creator:latest
+```
+
+## Building and running locally
+
+```
+docker build ./app -t pdf-workbook-creator
+docker run -v $(pwd)/example-volume:/mounted-volume -e "NODE_ENV=production" -e "UID=$(id -u)" -e "GID=$(id -g)" -p 3000:3000 -p 8000:8000 --rm pdf-workbook-creator
+```
+
 # pdf-workbook-creator
 
 Framework for automating the creation of a "workbook".
