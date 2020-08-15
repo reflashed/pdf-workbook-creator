@@ -1,0 +1,29 @@
+doctype html
+html
+  head
+    meta(charset='utf-8')
+    meta(name='viewport' content='width=device-width, initial-scale=1.0')
+
+    title= config.name
+
+    style(type='text/css').
+      .page-container {
+        position: relative;
+
+        width: #{ config.size.width };
+        height: #{ config.size.height };
+
+        border:solid black 1px;
+      }
+
+    link(rel='stylesheet', href='lib/css-reset.css')
+
+    each stylesheet in config.stylesheets
+      link(rel='stylesheet', href=stylesheet)
+
+  body
+    each page, index in config.pages
+      div.page-container
+        | !{ include(page.layout, page.local_data, index+1) }
+
+  script(src='/reload/reload.js')

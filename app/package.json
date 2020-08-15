@@ -2,11 +2,10 @@
   "name": "pdf-workbook-creator",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "prod": "cd src && node ./index.js",
-    "dev": "cd src && nodemon -e css,js,yml,html ./index.js"
+    "prod": "cd src && node ./server.js",
+    "dev": "cd src && nodemon -e scss,sass,css,js,yml,yaml,html,pug,json ./server.js"
   },
   "author": "",
   "license": "ISC",
@@ -16,7 +15,9 @@
     "js-yaml": "^3.14.0",
     "node-html-parser": "^1.2.20",
     "nodemon": "^2.0.4",
+    "pug": "^3.0.0",
     "puppeteer": "^5.2.1",
-    "reload": "^3.1.0"
+    "reload": "^3.1.0",
+    "watch": "^1.0.2"
   }
 }

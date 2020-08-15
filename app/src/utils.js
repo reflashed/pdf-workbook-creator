@@ -1,41 +1,104 @@
 const fs = require('fs-extra');
+
 const yaml = require('js-yaml');
 const puppeteer = require('puppeteer');
+const pug = require('pug');
 
 const utils = {};
 
 utils.loadConfig = (configPath) => {
   if (!fs.existsSync(configPath)) {
     console.log(`${configPath} missing. Exiting...`);
-    exit(1);
+    process.exit(1);
   }
 
   return yaml.safeLoad(fs.readFileSync(configPath, 'utf8'));
 };
 
-utils.createPdf = async function() {
-  const pdfOptions = {
-    path: PDF_PATH,
-    printBackground: true,
-    width: config.size.width,
-    height: config.size.height,
-  };
-
+utils.exportPdf = async function(url, pdfPath, width, height) {
   const browser = await puppeteer.launch({
     headless: true,
     args: ['--no-sandbox', '--disable-setuid-sandbox']
   });
+
   const page = await browser.newPage();
 
-  await page.setContent(html);
-  await page.addStyleTag({path: '/mounted-volume/' + config.pages.page.layout_table.css})
-  await page.addStyleTag({path: '/mounted-volume/' + config.pages.page_sequence.layout_image.css})
-  await page.addStyleTag({path: '/mounted-volume/' + config.pages.page_sequence.layout_notes.css})
-  await page.addStyleTag({content: '.page-dim {border:0px !important}'})
+  await page.goto(url);
+  await page.addStyleTag({content: '.page-container { border: 0px !important; }'})
 
-  await page.pdf(options);
-  console.log('Created/Updated Pdf in Output');
+  const pdfOptions = {
+    path: pdfPath,
+    printBackground: true,
+    width,
+    height,
+  };
+
+  await page.pdf(pdfOptions);
+  console.log(`Created PDF at ${pdfPath} from ${url}`);
+
   await browser.close();
 };
+
+// bc pug doesn't allow dyanmic includes:
+//   https://stackoverflow.com/questions/45824697/workaround-to-dynamic-includes-in-pug-jade
+utils.renderPug = (rootDir, globalData) => {
+  // We can't use path.join from pug out of the box (this fxn will execute in express's pug engine), so add a trailing slash in plain js
+  let prefix = rootDir;
+  if (prefix.substr(-1) !== '/') prefix += '/';
+
+  const options = {
+    global: {},
+    local: {},
+    index: -1,
+  };
+
+  // See if they added a json file instead of passing vars directly directly in the config
+  if (typeof globalData == 'string') {
+    const globalDataPath = prefix + globalData;
+    options.global = loadOptionsFromFile(globalDataPath);
+  }
+
+  return (path, localData = {}, index) => {
+    // See if they added a json file instead of passing vars directly directly in the config
+    if (typeof localData == 'string') {
+      const localDataPath = prefix + localData;
+      localData = loadOptionsFromFile(localDataPath);
+    }
+
+    options.local = localData;
+    options.index = index;
+
+    return pug.renderFile(prefix + path, options);
+  };
+};
+
+// Helper for 'renderPug' fxn to load json, yml, etc data into pug render method
+function loadOptionsFromFile(optionsPath) {
+  if (!optionsPath) return {};
+
+  let options;
+
+  if (!fs.existsSync(optionsPath)) {
+    console.log(`${options} missing. Exiting...`);
+    process.exit(1);
+  }
+
+  const fileContents = fs.readFileSync(optionsPath, 'utf8');
+
+  const split = optionsPath.split('.');
+  const ext = split[split.length - 1];
+
+  // should be easy to extend to other data types
+  if (ext == 'json') {
+    options = JSON.parse(fileContents);
+  } else if (ext == 'yaml' || ext == 'yml') {
+    options = yaml.safeLoad(fileContents);
+  }else {
+    console.log(`I cannot parse ${ext} files. Exiting...`);
+    process.exit(1);
+  }
+
+  return options;
+}
 
 module.exports = utils;
