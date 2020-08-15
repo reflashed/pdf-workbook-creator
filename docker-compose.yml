@@ -3,13 +3,13 @@ version: '3'
 services:
   main:
     build:
-      context: '.'
+      context: './app'
       dockerfile: 'Dockerfile'
     ports:
       - '3000:3000'
       - '8000:8000'
     volumes:
-      - '.:/app'
+      - './app:/app'
       - './example-volume:/mounted-volume'
     environment:
       - 'NODE_ENV=development'
