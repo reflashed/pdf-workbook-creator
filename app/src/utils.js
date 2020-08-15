@@ -1,4 +1,4 @@
-const fs = require('fs-extra');
+const fs = require('fs');
 
 const yaml = require('js-yaml');
 const puppeteer = require('puppeteer');
@@ -15,7 +15,7 @@ utils.loadConfig = (configPath) => {
   return yaml.safeLoad(fs.readFileSync(configPath, 'utf8'));
 };
 
-utils.exportPdf = async function(url, pdfPath, width, height) {
+utils.exportPdf = async function(url, pdfPath, width, height, uid, gid) {
   const browser = await puppeteer.launch({
     headless: true,
     args: ['--no-sandbox', '--disable-setuid-sandbox']
@@ -34,6 +34,7 @@ utils.exportPdf = async function(url, pdfPath, width, height) {
   };
 
   await page.pdf(pdfOptions);
+  fs.chownSync(pdfPath, uid, gid);
   console.log(`Created PDF at ${pdfPath} from ${url}`);
 
   await browser.close();

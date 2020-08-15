@@ -21,4 +21,10 @@ constants.PDF_PATH = path.join(constants.OUTPUT_DIR, 'output.pdf');
 constants.EXPRESS_PORT = 3000;
 constants.RELOAD_PORT = 8000;
 
+// UID / GID
+constants.UID = parseInt(process.env['UID'], 10);
+constants.GID = parseInt(process.env['GID'], 10);
+
+constants.NODE_ENV = process.env['NODE_ENV'];
+
 module.exports = constants;

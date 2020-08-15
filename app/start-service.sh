@@ -4,6 +4,7 @@ if [[ $NODE_ENV == "production" ]];
 then
   echo 'Service starting in production'
 
+  cp -r /cache/. /app/
   npm run prod
 
   exit 0
@@ -12,8 +13,6 @@ then
   echo 'Service starting in development'
 
   cp -r /cache/. /app/
-  exec npm run dev
-
   npm run dev
 
   exit 0

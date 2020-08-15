@@ -1,3 +1,5 @@
+const fs = require('fs');
+
 const express = require('express');
 const reload = require('reload')
 const watch = require('watch');
@@ -7,12 +9,39 @@ const utils = require('./utils');
 const {
   VIEWS_DIR,
   CONFIG_PATH,
+  MOUNTED_DIR,
   INPUT_DIR,
+  OUTPUT_DIR,
   PDF_PATH,
   EXPRESS_PORT,
   RELOAD_PORT,
+  UID,
+  GID,
+  NODE_ENV,
 } = require('./constants');
 
+/*
+ * Validation
+ */
+if (!fs.existsSync(MOUNTED_DIR)) {
+  console.log(`You must mount a volume to ${MOUNTED_DIR} to use this tool. Exiting...`);
+  process.exit(1);
+}
+
+if (!fs.existsSync(CONFIG_PATH)) {
+  console.log(`I can't find your config file at ${CONFIG_PATH}. Exiting...`);
+  process.exit(1);
+}
+
+// make output dir if there isn't one
+if (!fs.existsSync(OUTPUT_DIR)) {
+  fs.mkdirSync(OUTPUT_DIR);
+  fs.chownSync(OUTPUT_DIR, UID, GID);
+}
+
+/*
+ * App
+ */
 const app = express(); // serves web pages
 
 app.use(express.static(VIEWS_DIR)); // so we can access images, css, etc from the Dockerfile
@@ -48,6 +77,8 @@ reload(app, {
       PDF_PATH,
       config.size.width,
       config.size.height,
+      UID,
+      GID,
     ); // export pdf
   });
 });
