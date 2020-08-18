@@ -26,5 +26,12 @@ constants.UID = parseInt(process.env['UID'], 10);
 constants.GID = parseInt(process.env['GID'], 10);
 
 constants.NODE_ENV = process.env['NODE_ENV'];
+constants.MODE = process.env['MODE'];
+
+// hot reload options
+//   https://github.com/mikeal/watch
+constants.WATCH_OPTIONS = {
+  interval: .5, // in s
+};
 
 module.exports = constants;

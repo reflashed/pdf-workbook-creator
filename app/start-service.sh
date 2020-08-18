@@ -2,12 +2,21 @@
 
 if [[ $NODE_ENV == "production" ]];
 then
-  echo 'Service starting in production'
-
   cp -r /cache/. /app/
   npm run prod
 
-  exit 0
+  if [[ $MODE == "EDIT" ]];
+  then
+    echo 'Service starting in production (edit mode)'
+    npm run prod-edit
+
+    exit 0
+  else
+    echo 'Service starting in production'
+    npm run prod
+
+    exit 0
+  fi
 elif [[ $NODE_ENV == "development" ]];
 then
   echo 'Service starting in development'

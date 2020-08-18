@@ -18,6 +18,8 @@ const {
   UID,
   GID,
   NODE_ENV,
+  MODE,
+  WATCH_OPTIONS,
 } = require('./constants');
 
 /*
@@ -60,17 +62,12 @@ app.get('/', (req, res) => {
   });
 });
 
-app.listen(EXPRESS_PORT, () => console.log(`Express listening on ${EXPRESS_PORT}`));
+const server = app.listen(EXPRESS_PORT, () => {
+  console.log(`Express listening on ${EXPRESS_PORT}`)
 
-// hot reloading
-reload(app, {
-  port: RELOAD_PORT,
-}).then((reloadReturned) => {
-  // watch for file changes in input files
-  watch.watchTree(INPUT_DIR, (f, curr, prev) => {
+  if (MODE != 'edit') {
+    // just do this once w/o hot reload
     const config = utils.loadConfig(CONFIG_PATH); // reload config here as well for hot reloads in case config changes
-
-    reloadReturned.reload(); // reloads user's browser
 
     utils.exportPdf(
       `http://localhost:${EXPRESS_PORT}`,
@@ -79,6 +76,31 @@ reload(app, {
       config.size.height,
       UID,
       GID,
-    ); // export pdf
-  });
+    ).then(() => {
+      server.close(); // stop express server bc we're all done
+    });
+  }
 });
+
+if (MODE == 'edit') {
+  // hot reloading
+  reload(app, {
+    port: RELOAD_PORT,
+  }).then((reloadReturned) => {
+    // watch for file changes in input files
+    watch.watchTree(INPUT_DIR, WATCH_OPTIONS, (f, curr, prev) => {
+      const config = utils.loadConfig(CONFIG_PATH); // reload config here as well for hot reloads in case config changes
+
+      reloadReturned.reload(); // reloads user's browser
+
+      utils.exportPdf(
+        `http://localhost:${EXPRESS_PORT}`,
+        PDF_PATH,
+        config.size.width,
+        config.size.height,
+        UID,
+        GID,
+      ); // export pdf
+    });
+  });
+}
